@@ -45,6 +45,7 @@ const ChatRoom: React.FC<{}> = props => {
         socket.on('Message', (data: IMessage) => {
             setList([...listRef.current, data])
             listRef.current = [...listRef.current, data]
+            document.getElementsByClassName('chartContent')[0].scrollTop = document.getElementsByClassName('chartContent')[0].scrollHeight
         })
         socket.on('Login', (data: LoginInfo) => {
             const { onLineCount, onLineUsers, userInfo } = data
