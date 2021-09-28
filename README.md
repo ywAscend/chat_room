@@ -3,4 +3,4 @@
 
 效果：
 
-![chat_room.png](https://i.loli.net/2021/09/28/P8ckwsi5bWMqRKj.png)
+![chatRoom.png](https://i.loli.net/2021/09/28/sKF1T7XW4n6Y2Df.png)
