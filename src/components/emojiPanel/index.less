@@ -1,21 +1,21 @@
 .emojiPanelContent{
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    box-sizing: border-box;
+    height: inherit;
+    background: #424040;
+    overflow: scroll;
     .emojiPanel{
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 300px;
-        width: 100%;
-        background: white;
-        .emoji-mart{
-            width: inherit !important;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        li{
+            height: 50px;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
         }
-        .emoji-mart-search{display: none;}/* 隐藏搜索框 */
-        .emoji-mart-preview{display: none;}
-    
     }
+    
+    
 }

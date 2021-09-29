@@ -1,22 +1,23 @@
-import React, { memo } from "react";
-import { Picker } from 'emoji-mart'
-import 'emoji-mart/css/emoji-mart.css'
-
+import React, { memo, MouseEvent } from "react"
+import { EmojEnum } from "../../utils/common"
 import './index.less'
 
 type IProps = {
     visiable: boolean,
-    chooseEmoji: (emoji: any) => void,
-    hideEmojiPanel: () => void
+    chooseEmoji: (e:MouseEvent,emoji: any) => void
 }
 
 const EmojiPanel: React.FC<IProps> = props => {
-    const { chooseEmoji, visiable, hideEmojiPanel } = props
+    const { chooseEmoji,visiable} = props
     return (
-        <div className='emojiPanelContent' style={{ display: visiable ? 'block' : 'none' }} onClick={hideEmojiPanel}>
-            <div className='emojiPanel' >
-                <Picker style={{ position: 'absolute', bottom: '0', left: '0' }} onSelect={chooseEmoji} />
-            </div>
+        <div className='emojiPanelContent' style={{ display: visiable ? 'block' : 'none' }} >
+            <ul className='emojiPanel' >
+               {
+                   EmojEnum.map((item,index)=>{
+                       return <li key={index} onClick={(e)=>chooseEmoji(e,item)}><span>{item.native}</span></li>
+                   })
+               }
+            </ul>
         </div>
     )
 }

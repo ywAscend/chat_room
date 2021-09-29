@@ -28,50 +28,93 @@
     .chartContent::-webkit-scrollbar{
         display: none;
     }
+
     .bootMenu{
-        background: #1c1e1f;
         position: fixed;
-        bottom: 0;
         left: 0;
-        // border-top: 1px solid #ccc;
-        height: 60px;
-        line-height: 60px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 10px;
-        box-sizing: border-box;
-        .voiceContent{
-            flex: .2;
-            span{
-                display: inline-block;
-                height: 30px;
-                width: 30px;
-                img{
-                    height: 100%;
-                    width: 100%;
+        bottom: 0;
+        right: 0;
+        // border: 1px solid red;
+        // padding: 10px 0;
+        .menuItem{
+            // border: 1px solid blue;
+            position: relative;
+            z-index: 9;
+            height: 60px;
+            line-height: 60px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            background: #1c1e1f;
+            .voiceContent{
+                flex: .2;
+                span{
+                    display: inline-block;
+                    height: 30px;
+                    width: 30px;
+                    img{
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+            }
+            .inputContent{
+                line-height: normal;
+                padding: 5px 0;
+                flex: .65;
+                .ant-input-clear-icon {
+                    color: #8a8181;
+                }
+                input{
+                    background: #1c1e1f;
+                    color: #fff;
+                }
+               
+            }
+            .emjo{
+                flex: .15;
+                display: flex;
+                padding: 16px 5px 0 5px;
+                justify-content: space-between;
+               
+            }
+        }
+        .itemDetail{
+            border-top: 1px solid #3a3b3c;
+            box-sizing: border-box;
+            background: #1c1e1f;
+            height: 0;
+            width: 100%;
+            transition: all .2s ease-out;
+            .otherContent{
+                height: inherit;
+                padding: 10px;
+                display: flex;
+                .itemConent{
+                    padding: 15px;
+                    height: fit-content;
+                    .album{
+                        padding: 10px;
+                        border: 1px solid #827e7e;
+                        border-radius: 8px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    .albumText{
+                        text-align: center;
+                        span{
+                            font-size: 14px;
+                            color: #eee;
+                        }
+                    }
                 }
             }
         }
-        .inputContent{
-            line-height: normal;
-            padding: 5px 0;
-            flex: .65;
-            .ant-input-clear-icon {
-                color: #8a8181;
-            }
-            input{
-                background: #1c1e1f;
-                color: #fff;
-            }
-           
-        }
-        .emjo{
-            flex: .15;
-            display: flex;
-            padding: 16px 5px 0 5px;
-            justify-content: space-between;
-           
+        .itemShow{
+            height: 300px;
         }
     }
 }
