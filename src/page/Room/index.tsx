@@ -69,6 +69,7 @@ const ChatRoom: React.FC<{}> = props => {
             setOnlineUser(onLineCount)
             setUserList(onLineUsers)
             chatListRef.current?.append(createChild('LoginOut', userInfo))
+            scrollToView()
         })
         return () => {
             socket.close()
@@ -116,8 +117,6 @@ const ChatRoom: React.FC<{}> = props => {
             message.warn('图片不能大于1m，请重新上传')
             return
         }
-        console.log('000000000000')
-
         let reader = new FileReader();
         reader.readAsDataURL(imgFile);
         reader.onload = function (event) {
