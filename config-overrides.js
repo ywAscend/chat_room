@@ -4,7 +4,7 @@ module.exports = override(
         javascriptEnabled: true,
         modifyVars: {
             '@primary-color':'#1DA57A',
-            '@font-size-base': '16px',
+            //'@font-size-base': '16px',
         },
     }),
     fixBabelImports('import', {

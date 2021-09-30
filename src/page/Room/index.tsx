@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState,MouseEvent,ChangeEvent  } from "react";
+import React, { memo, useEffect, useRef, useState, MouseEvent, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { EnumTypes } from "../../utils/common";
@@ -16,9 +16,10 @@ export interface IUserInfo {
     avatar: any
 }
 
-interface IMessage {
+export interface IMessage {
     message: string,
-    userInfo: IUserInfo
+    userInfo: IUserInfo,
+    type?: string
 }
 
 const ChatRoom: React.FC<{}> = props => {
@@ -42,20 +43,20 @@ const ChatRoom: React.FC<{}> = props => {
         li.innerHTML = `<div id=${type === 'Login' ? "tips" : 'leaveTips'}>${userInfo.username}${EnumTypes[type]}了群聊</div>`
         return li
     }
-    useEffect(()=>{
-        document.getElementsByClassName('chartContent')[0].addEventListener('click',()=>{
+    useEffect(() => {
+        document.getElementsByClassName('chartContent')[0].addEventListener('click', () => {
             hideEmojiPanel()
         })
         return () => {
-            document.getElementsByClassName('chartContent')[0]?.removeEventListener('click',()=>{})
+            document.getElementsByClassName('chartContent')[0]?.removeEventListener('click', () => { })
         }
-    },[])
+    }, [])
 
     useEffect(() => {
         socket.on('Message', (data: IMessage) => {
             setList([...listRef.current, data])
             listRef.current = [...listRef.current, data]
-            document.getElementsByClassName('chartContent')[0].scrollTop = document.getElementsByClassName('chartContent')[0].scrollHeight
+            scrollToView()
         })
         socket.on('Login', (data: LoginInfo) => {
             const { onLineCount, onLineUsers, userInfo } = data
@@ -74,9 +75,13 @@ const ChatRoom: React.FC<{}> = props => {
         }
     }, [socket])
 
+    const scrollToView = () => {
+        document.getElementsByClassName('chartContent')[0].scrollTop = document.getElementsByClassName('chartContent')[0].scrollHeight
+    }
+
     const handlePressEnter = () => {
         if (!value) return
-        socket.emit('Message', { userInfo, message: value })
+        socket.emit('Message', { userInfo, message: value, type: 'msg' })
         setValue('')
         emojRef.current = []
         hideEmojiPanel()
@@ -87,13 +92,13 @@ const ChatRoom: React.FC<{}> = props => {
         setPhoneVisible(false)
     }
 
-    const addEmoji = (e:MouseEvent,emoji: any) => {
+    const addEmoji = (e: MouseEvent, emoji: any) => {
         e && e.stopPropagation()
         emojRef.current = [...emojRef.current, emoji.native]
         setValue(emojRef.current)
     }
 
-    const handlePanelClick =()=>{
+    const handlePanelClick = () => {
         setPanelVisible(true)
         setPhoneVisible(false)
     }
@@ -103,21 +108,23 @@ const ChatRoom: React.FC<{}> = props => {
     }
 
     const handleAlbumClick = () => {
-        message.info('to do')
-        // document.getElementById('albumPhoto')?.click()
+        document.getElementById('albumPhoto')?.click()
     }
-    const handleChange = (e:ChangeEvent) => {
+    const handleChange = (e: ChangeEvent) => {
         let imgFile = (e.target as any).files[0]
-        console.log('图片源文件',imgFile)
+        if (imgFile.size > 1024000) {
+            message.warn('图片不能大于1m，请重新上传')
+            return
+        }
+        console.log('000000000000')
 
-        // let reader = new FileReader();
-        // reader.readAsDataURL(imgFile);
-        // reader.onload = function (event) {
-        //     let imgs = event.result
-        //     console.log('Base64图片文件',imgs)
-        //     socket.emit('Message', { userInfo, message: imgs })
-        // };
-        
+        let reader = new FileReader();
+        reader.readAsDataURL(imgFile);
+        reader.onload = function (event) {
+            let imgs = this.result
+            socket.emit('Message', { userInfo, message: imgs, type: 'img' })
+            hideEmojiPanel()
+        };
     }
     return (
         <div className='chartRoom'>
@@ -147,13 +154,13 @@ const ChatRoom: React.FC<{}> = props => {
                 <div className={`itemDetail ${panelVisible || phoneVisible ? 'itemShow' : ''}`}>
                     <EmojiPanel visiable={panelVisible} chooseEmoji={addEmoji} />
                     {
-                        phoneVisible &&<div className='otherContent'>
+                        phoneVisible && <div className='otherContent'>
                             <div className='itemConent' onClick={handleAlbumClick}>
                                 <div className='album'>
                                     <FileImageOutlined style={{ fontSize: '25px', color: '#fff' }} />
                                 </div>
                                 <div className='albumText'>
-                                    <input type="file" id="albumPhoto" hidden onChange={(e:ChangeEvent )=>handleChange(e)}  name="albumPhoto" />
+                                    <input type="file" id="albumPhoto" hidden onChange={(e: ChangeEvent) => handleChange(e)} name="albumPhoto" />
                                     <span>相册</span>
                                 </div>
                             </div>

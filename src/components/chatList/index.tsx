@@ -1,10 +1,29 @@
-import React, { memo } from "react";
-import { IUserInfo } from "../../page/Room";
+import React, { memo,useState } from "react";
+import { IUserInfo,IMessage } from "../../page/Room";
+import PopImgae from '../popImage'
 import { ImgSrc } from "../../utils/common";
 import './index.less'
 
 const ChatList: React.FC<{ data: Array<any>, userInfo: IUserInfo,myRef:any }> = props => {
   const { data, userInfo,myRef } = props
+  const [visible,setVisible] = useState<boolean>(false)
+  const [showSrc,setShowSrc] = useState<string>('')
+  const handleClick = (data:IMessage) => {
+    const {message,type} = data
+    if(type ==='img'){
+      setVisible(true)
+      setShowSrc(message)
+    }
+  }
+
+  const renderContent = (data:IMessage) => {
+    const {message,type} = data
+    if(type ==='img'){
+      return <img src={message} alt=""/>
+    }
+    return message
+  }
+
   return (
     <ul className='chatList' ref={myRef}>
       {
@@ -13,8 +32,8 @@ const ChatList: React.FC<{ data: Array<any>, userInfo: IUserInfo,myRef:any }> = 
             return <li key={index} className='currentUserList'>
               <div className='userInfo'>
                 <div className='name'>{item.userInfo.username}</div>
-                <div className='msg'>
-                  {item.message}
+                <div className='msg'  onClick={()=>handleClick(item)}>
+                  {renderContent(item)}
                 </div>
               </div>
               <div className='avatarContent'>
@@ -33,12 +52,13 @@ const ChatList: React.FC<{ data: Array<any>, userInfo: IUserInfo,myRef:any }> = 
             <div className='userInfo'>
               <div className='name'>{item.userInfo.username}</div>
               <div className='msg'>
-                {item.message}
+                {renderContent(item)}
               </div>
             </div>
           </li>
         })
       }
+      <PopImgae visible={visible} src={showSrc} close={()=>setVisible(false)} />
     </ul>
   )
 }
